@@ -187,9 +187,106 @@
     gap: 22px;
     margin-bottom: 28px;
   }
+  /* Contact Modal Styles */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(6, 8, 17, 0.78);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+  .modal-backdrop.open {
+    display: flex;
+    opacity: 1;
+  }
+  .modal-box {
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-hover);
+    border-radius: 20px;
+    padding: 26px 24px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    position: relative;
+    transform: translateY(10px);
+    transition: transform 0.22s ease;
+  }
+  .modal-backdrop.open .modal-box {
+    transform: translateY(0);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    color: var(--text-1);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .contact-opt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 15px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text-0);
+    text-decoration: none;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .contact-opt:hover {
+    border-color: var(--cyan);
+    transform: translateY(-1px);
+  }
+
   @media (max-width: 960px) {
     .hero-grid, .split-2, .strengths-grid, .exp-grid { grid-template-columns: 1fr !important; }
     .nav-links { display: none; }
+  }
+  @media (max-width: 640px) {
+    .nav-inner { padding: 0 14px; height: 60px; gap: 8px; }
+    .brand { gap: 8px; }
+    .avatar-badge { width: 34px; height: 34px; font-size: 13px; border-radius: 9px; }
+    .brand-name { font-size: 13px; letter-spacing: 0; }
+    .brand-sub { display: none; }
+    .nav-btns { gap: 6px; }
+    .nav-btns .btn-ghost { padding: 6px 10px; font-size: 11.5px; }
+    .nav-btns .btn-primary { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+    .wrap { padding: 18px 14px 56px; }
+    .hero-left { padding: 22px 18px; }
+    .pill-badge { font-size: 10.5px; padding: 4px 11px; }
+    .hero-title { font-size: 25px; line-height: 1.2; }
+    .hero-desc { font-size: 14px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .hero-actions { flex-direction: column; align-items: stretch !important; }
+    .hero-actions a { justify-content: center; width: 100%; }
+    .hero-right { padding: 16px; }
+    #globe-canvas { height: 240px; }
+    .globe-foot { font-size: 11.5px; line-height: 1.5; }
+    .map-card, .auto-card, .exp-card { padding: 18px 16px; }
+    .compare-box { grid-template-columns: 1fr; gap: 10px; }
+    .lead-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .sec-title { font-size: 20px; }
   }
   .hero-left {
     padding: 36px;
@@ -292,6 +389,7 @@
     height: 280px;
     display: block;
     cursor: grab;
+    touch-action: pan-y;
   }
   .globe-foot {
     text-align: center;
@@ -399,7 +497,9 @@
   }
   #gis-svg {
     width: 100%;
-    height: 250px;
+    height: auto;
+    aspect-ratio: 540 / 240;
+    max-height: 260px;
     display: block;
   }
   .map-info {
@@ -556,7 +656,7 @@
 
     <div class="nav-btns">
       <button class="btn-ghost" onclick="toggleTheme()" id="theme-btn">Light Mode</button>
-      <a href="mailto:umaircheemapa2@gmail.com" class="btn-primary">Contact Me &rarr;</a>
+      <button type="button" onclick="openContactModal()" class="btn-primary" style="border:none; cursor:pointer; font-family:inherit;">Contact Me &rarr;</button>
     </div>
   </div>
 </header>
@@ -620,11 +720,11 @@
     <div class="card hero-right">
       <div class="globe-top">
         <span>GLOBAL WORK COVERAGE</span>
-        <span style="color:#34d399;">Drag Globe to Rotate 3D</span>
+        <span style="color:#34d399;">Touch / Drag to Rotate 3D</span>
       </div>
       <canvas id="globe-canvas" width="480" height="280"></canvas>
       <div class="globe-foot">
-        <strong>Phone / WhatsApp:</strong> (+92) 314-9669576 &nbsp;|&nbsp; <strong>Email:</strong> umaircheemapa2@gmail.com
+        <strong>WhatsApp / Call:</strong> <a href="https://wa.me/923149669576" target="_blank" rel="noopener noreferrer" style="color:var(--cyan); text-decoration:none; font-weight:700;">+92 314-9669576</a> &nbsp;|&nbsp; <strong>Email:</strong> <a href="javascript:void(0)" onclick="copyEmail(this)" style="color:var(--emerald); text-decoration:none; font-weight:700;">umaircheemapa2@gmail.com</a>
       </div>
     </div>
   </section>
@@ -979,15 +1079,75 @@
       <a href="https://wa.me/923149669576?text=Hi%20Muhammad%20Umair,%20I%20reviewed%20your%20portfolio." target="_blank" rel="noopener noreferrer" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; text-decoration: none; border-radius: 8px; border: 1px solid rgba(37,211,102,0.4); color:#25d366;">
         💬 WhatsApp (+92 314-9669576)
       </a>
-      <a href="mailto:umaircheemapa2@gmail.com" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; text-decoration: none; border-radius: 8px; border: 1px solid var(--border); color: var(--text-1);">
-        ✉️ umaircheemapa2@gmail.com
+      <a href="tel:+923149669576" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; text-decoration: none; border-radius: 8px; border: 1px solid var(--border); color: var(--text-0);">
+        📞 Call +92 314-9669576
       </a>
+      <button type="button" onclick="copyEmail(this)" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; border-radius: 8px; border: 1px solid var(--border); color: var(--text-1); font-family: inherit;">
+        📋 Copy Email: umaircheemapa2@gmail.com
+      </button>
     </div>
     <div style="color: var(--text-2); font-size: 12px; border-top: 1px solid var(--border); width: 100%; padding-top: 18px; margin-top: 10px;">
       &copy; 2026 Muhammad Umair Cheema &bull; Punjab, Pakistan &bull; Built with clean, lightweight semantic code.
     </div>
   </footer>
 </main>
+
+<!-- INTERACTIVE CONTACT MODAL -->
+<div id="contact-modal" class="modal-backdrop" onclick="if(event.target===this) closeContactModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onclick="closeContactModal()" aria-label="Close">&times;</button>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+      <div class="avatar-badge" style="width:34px; height:34px; font-size:13px;">MU</div>
+      <div>
+        <div style="font-weight:800; font-size:16px;">Connect with Muhammad Umair</div>
+        <div style="font-size:12px; color:var(--text-2);">Available for Remote &amp; On-Site Opportunities</div>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--text-2); margin-bottom:16px;">
+      Choose your preferred way to reach out directly:
+    </p>
+
+    <a href="https://wa.me/923149669576?text=Hi%20Muhammad%20Umair,%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20connect." target="_blank" rel="noopener noreferrer" class="contact-opt" style="border-color:rgba(37,211,102,0.4); background:rgba(37,211,102,0.08);">
+      <div>
+        <div style="font-weight:700; font-size:14px; color:#25d366;">💬 WhatsApp Instant Chat</div>
+        <div style="font-size:12px; color:var(--text-2);">+92 314-9669576 (Fastest Response)</div>
+      </div>
+      <span style="color:#25d366; font-weight:800;">Open &rarr;</span>
+    </a>
+
+    <button type="button" onclick="copyEmail(this)" class="contact-opt">
+      <div>
+        <div style="font-weight:700; font-size:14px; color:var(--cyan);">📋 Copy Email Address</div>
+        <div style="font-size:12px; color:var(--text-2);" id="modal-email-sub">umaircheemapa2@gmail.com</div>
+      </div>
+      <span style="color:var(--cyan); font-weight:700; font-size:12.5px;" class="copy-lbl">Copy</span>
+    </button>
+
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=umaircheemapa2@gmail.com&su=Job%20Opportunity%20-%20Portfolio%20Inquiry" target="_blank" rel="noopener noreferrer" class="contact-opt">
+      <div>
+        <div style="font-weight:700; font-size:14px;">✉️ Compose in Gmail / Email</div>
+        <div style="font-size:12px; color:var(--text-2);">umaircheemapa2@gmail.com</div>
+      </div>
+      <span style="color:var(--text-1); font-weight:700;">Compose &rarr;</span>
+    </a>
+
+    <a href="tel:+923149669576" class="contact-opt">
+      <div>
+        <div style="font-weight:700; font-size:14px; color:var(--emerald);">📞 Direct Phone Call</div>
+        <div style="font-size:12px; color:var(--text-2);">+92 314-9669576 (Pakistan PKT)</div>
+      </div>
+      <span style="color:var(--emerald); font-weight:700;">Call &rarr;</span>
+    </a>
+
+    <a href="Muhammad_Umair_Cheema_CV.pdf" download class="contact-opt" style="margin-bottom:0; background:linear-gradient(135deg, rgba(16,185,129,0.16), rgba(2,132,199,0.16)); border-color:rgba(16,185,129,0.4);">
+      <div>
+        <div style="font-weight:700; font-size:14px;">📄 Download Full Resume (PDF)</div>
+        <div style="font-size:12px; color:var(--text-2);">ATS-Verified 2-Page CV</div>
+      </div>
+      <span style="color:#34d399; font-weight:800;">Download &darr;</span>
+    </a>
+  </div>
+</div>
 
 <script>
   // Cursor Spotlight Glow
@@ -1007,10 +1167,60 @@
     document.getElementById('theme-btn').textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
   }
 
-  // 3D Interactive Rotating Globe
+  // Contact Modal & Copy Email Helpers
+  function openContactModal() {
+    document.getElementById('contact-modal').classList.add('open');
+  }
+  function closeContactModal() {
+    document.getElementById('contact-modal').classList.remove('open');
+  }
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeContactModal();
+  });
+  function copyEmail(el) {
+    const email = 'umaircheemapa2@gmail.com';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const lbl = el.querySelector ? el.querySelector('.copy-lbl') : null;
+    if (lbl) {
+      const orig = lbl.textContent;
+      lbl.textContent = '✓ Copied!';
+      lbl.style.color = '#10b981';
+      setTimeout(() => { lbl.textContent = orig; lbl.style.color = 'var(--cyan)'; }, 2200);
+    } else {
+      const origHtml = el.innerHTML;
+      el.innerHTML = '✓ Email Copied: umaircheemapa2@gmail.com';
+      el.style.borderColor = '#10b981';
+      el.style.color = '#10b981';
+      setTimeout(() => { el.innerHTML = origHtml; el.style.borderColor = ''; el.style.color = ''; }, 2200);
+    }
+  }
+
+  // 3D Interactive Rotating Globe (Retina + Mobile Touch Ready)
   const gCanvas = document.getElementById('globe-canvas');
   const gCtx = gCanvas.getContext('2d');
   let rotY = -0.5, rotX = 0.22, dragging = false, lx = 0, ly = 0;
+  let cW = 480, cH = 280;
+
+  function resizeGlobe() {
+    const rect = gCanvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cW = Math.max(240, rect.width || 320);
+    cH = Math.max(200, rect.height || 240);
+    gCanvas.width = cW * dpr;
+    gCanvas.height = cH * dpr;
+    gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resizeGlobe();
+  window.addEventListener('resize', resizeGlobe);
 
   const dots = [];
   for (let lat = -75; lat <= 75; lat += 12) {
@@ -1021,26 +1231,27 @@
   const cities = [
     { name: 'PAKISTAN (Lahore)', lat: 31.5, lon: 74.3, col: '#10b981' },
     { name: 'UK (Manchester)', lat: 53.4, lon: -2.2, col: '#38bdf8' },
-    { name: 'USA (Texas / Illinois)', lat: 34.0, lon: -94.0, col: '#a78bfa' }
+    { name: 'USA (Texas / IL)', lat: 34.0, lon: -94.0, col: '#a78bfa' }
   ];
 
   function proj(lat, lon, R) {
     const p = (lat * Math.PI) / 180, t = (lon * Math.PI) / 180 + rotY;
     const x = R * Math.cos(p) * Math.sin(t), y = -R * Math.sin(p), z = R * Math.cos(p) * Math.cos(t);
     const cy = Math.cos(rotX), sy = Math.sin(rotX);
-    return { x: gCanvas.width / 2 + x, y: gCanvas.height / 2 + (y * cy - z * sy), z: y * sy + z * cy };
+    return { x: cW / 2 + x, y: cH / 2 + (y * cy - z * sy), z: y * sy + z * cy };
   }
 
   function drawGlobe() {
-    gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+    gCtx.clearRect(0, 0, cW, cH);
     if (!dragging) rotY += 0.005;
-    const R = 105;
+    const R = Math.min(105, Math.min(cW, cH) * 0.37);
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
     dots.forEach(d => {
       const p = proj(d.lat, d.lon, R);
       if (p.z > -20) {
         const a = Math.max(0.15, (p.z + R) / (2 * R));
-        gCtx.fillStyle = `rgba(148, 163, 184, ${a * 0.6})`;
+        gCtx.fillStyle = isLight ? `rgba(71, 85, 105, ${a * 0.55})` : `rgba(148, 163, 184, ${a * 0.6})`;
         gCtx.beginPath(); gCtx.arc(p.x, p.y, 1.4, 0, Math.PI * 2); gCtx.fill();
       }
     });
@@ -1052,24 +1263,27 @@
       gCtx.lineWidth = 1.5;
       gCtx.setLineDash([4, 3]);
       gCtx.beginPath(); gCtx.moveTo(pk.x, pk.y);
-      gCtx.quadraticCurveTo(gCanvas.width / 2, gCanvas.height / 2 - 55, tg.x, tg.y);
+      gCtx.quadraticCurveTo(cW / 2, cH / 2 - R * 0.52, tg.x, tg.y);
       gCtx.stroke(); gCtx.setLineDash([]);
     });
 
+    gCtx.font = 'bold 11px Inter, sans-serif';
     cities.forEach(c => {
       const p = proj(c.lat, c.lon, R);
       if (p.z > -30) {
         gCtx.fillStyle = c.col;
         gCtx.beginPath(); gCtx.arc(p.x, p.y, 4.5, 0, Math.PI * 2); gCtx.fill();
-        gCtx.font = 'bold 11px Inter, sans-serif';
-        gCtx.fillStyle = '#f8fafc';
-        gCtx.fillText(c.name, p.x + 8, p.y + 4);
+        gCtx.fillStyle = isLight ? '#0f172a' : '#f8fafc';
+        const tw = gCtx.measureText(c.name).width;
+        const tx = (p.x + 8 + tw > cW - 6) ? (p.x - tw - 8) : (p.x + 8);
+        gCtx.fillText(c.name, Math.max(6, tx), p.y + 4);
       }
     });
     requestAnimationFrame(drawGlobe);
   }
   drawGlobe();
 
+  // Mouse Drag Events
   gCanvas.addEventListener('mousedown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
   window.addEventListener('mouseup', () => dragging = false);
   window.addEventListener('mousemove', e => {
@@ -1078,6 +1292,26 @@
     rotX = Math.max(-0.7, Math.min(0.7, rotX + (e.clientY - ly) * 0.006));
     lx = e.clientX; ly = e.clientY;
   });
+
+  // Mobile Touch Drag Events
+  gCanvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+      dragging = true;
+      lx = e.touches[0].clientX;
+      ly = e.touches[0].clientY;
+    }
+  }, { passive: true });
+  window.addEventListener('touchend', () => { dragging = false; }, { passive: true });
+  gCanvas.addEventListener('touchmove', e => {
+    if (!dragging || e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - lx;
+    const dy = e.touches[0].clientY - ly;
+    if (Math.abs(dx) > Math.abs(dy)) e.preventDefault();
+    rotY += dx * 0.01;
+    rotX = Math.max(-0.7, Math.min(0.7, rotX + dy * 0.007));
+    lx = e.touches[0].clientX;
+    ly = e.touches[0].clientY;
+  }, { passive: false });
 
   // GIS Map Interactive Switcher
     const zoneInfo = {
