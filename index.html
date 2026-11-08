@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Muhammad Umair Cheema — Interactive Portfolio</title>
+<style>
+  :root {
+    --bg-0: #060811;
+    --bg-1: #0d111d;
+    --bg-2: #151b2d;
+    --glass: rgba(13, 17, 29, 0.82);
+    --border: rgba(148, 163, 184, 0.14);
+    --border-hover: rgba(56, 189, 248, 0.42);
+    --text-0: #f8fafc;
+    --text-1: #cbd5e1;
+    --text-2: #94a3b8;
+    --emerald: #10b981;
+    --cyan: #38bdf8;
+    --violet: #a78bfa;
+    --amber: #fbbf24;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  [data-theme="light"] {
+    --bg-0: #f8fafc;
+    --bg-1: #ffffff;
+    --bg-2: #f1f5f9;
+    --glass: rgba(255, 255, 255, 0.88);
+    --border: rgba(15, 23, 42, 0.10);
+    --border-hover: rgba(37, 99, 235, 0.35);
+    --text-0: #0f172a;
+    --text-1: #334155;
+    --text-2: #64748b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.25s, color 0.25s;
+  }
+
+  /* Soft Luxury Aurora Glow */
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(600px circle at 15% 15%, rgba(16, 185, 129, 0.12), transparent 60%),
+      radial-gradient(600px circle at 85% 20%, rgba(56, 189, 248, 0.12), transparent 60%),
+      radial-gradient(650px circle at 50% 85%, rgba(167, 139, 250, 0.09), transparent 65%);
+  }
+
+  /* Top Glass Navigation */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-0);
+  }
+  .avatar-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #10b981, #0284c7);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  }
+  .brand-name { font-weight: 800; font-size: 15px; letter-spacing: 0.2px; }
+  .brand-sub { font-size: 11.5px; color: var(--text-2); }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: 10px;
+  }
+  .nav-links a {
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 7px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover {
+    color: var(--text-0);
+    background: var(--bg-2);
+  }
+  .nav-btns { display: flex; align-items: center; gap: 10px; }
+  .btn-ghost {
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    color: var(--text-0);
+    padding: 7px 13px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); }
+  .btn-primary {
+    background: linear-gradient(135deg, #10b981, #0284c7);
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 18px rgba(16, 185, 129, 0.3);
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+
+  /* Main Container */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* Spotlight Card */
+  .card {
+    position: relative;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(450px circle at var(--mx, 50%) var(--my, 50%), rgba(56, 189, 248, 0.09), transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .card > * { position: relative; z-index: 1; }
+  .card:hover { border-color: var(--border-hover); }
+
+  /* HERO SECTION */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 22px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 960px) {
+    .hero-grid, .split-2, .strengths-grid, .exp-grid { grid-template-columns: 1fr !important; }
+    .nav-links { display: none; }
+  }
+  .hero-left {
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+    font-size: 12px;
+    font-weight: 700;
+    width: fit-content;
+    margin-bottom: 18px;
+  }
+  .dot-live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.45); opacity: 0.4; }
+  }
+  .hero-title {
+    font-size: clamp(28px, 3.3vw, 40px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.6px;
+    margin-bottom: 14px;
+  }
+  .grad-text {
+    background: linear-gradient(90deg, #34d399, #38bdf8, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-desc {
+    color: var(--text-1);
+    font-size: 15px;
+    margin-bottom: 22px;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .skill-tag {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 6px 13px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-0);
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item .num {
+    font-size: 23px;
+    font-weight: 800;
+    color: var(--text-0);
+  }
+  .stat-item .lbl {
+    font-size: 11.5px;
+    color: var(--text-2);
+  }
+
+  /* Right Hero: 3D Globe */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    background: radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.14), transparent 70%), var(--bg-1);
+  }
+  .globe-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-2);
+  }
+  #globe-canvas {
+    width: 100%;
+    height: 280px;
+    display: block;
+    cursor: grab;
+  }
+  .globe-foot {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-2);
+    background: var(--bg-2);
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  /* Section Titles */
+  .sec-header {
+    margin: 44px 0 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .sec-eyebrow {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cyan);
+    margin-bottom: 4px;
+  }
+  .sec-title {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+  }
+  .sec-sub {
+    font-size: 13.5px;
+    color: var(--text-2);
+  }
+
+  /* 4 CORE STRENGTHS (FAST LEARNER & TECH MINDSET) */
+  .strengths-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .strength-card {
+    padding: 22px;
+  }
+  .s-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 14px;
+    font-weight: 800;
+    font-size: 16px;
+  }
+  .strength-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .strength-card p {
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  /* INTERACTIVE SHOWCASE 1: GIS MAPPING & AUTOMATION TOOLS */
+  .split-2 {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+  }
+  .map-card {
+    padding: 24px;
+  }
+  .zone-btns {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .zone-btn {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text-1);
+    padding: 7px 14px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .zone-btn.active {
+    background: linear-gradient(135deg, #10b981, #0284c7);
+    color: #fff;
+    border-color: transparent;
+  }
+  .map-box {
+    background: #070a14;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  #gis-svg {
+    width: 100%;
+    height: 250px;
+    display: block;
+  }
+  .map-info {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Right Card: Custom Extension & Automation Visual Flow */
+  .auto-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .compare-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .cmp-col {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+  }
+  .step-flow {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .flow-step:last-child { margin-bottom: 0; }
+  .flow-step.highlight {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+  }
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.18);
+    color: var(--cyan);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* INTERACTIVE SHOWCASE 2: LEAD GEN & LIVE CHAT */
+  .lead-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .chat-box {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    max-width: 86%;
+    animation: fadeUp 0.3s ease-out;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .b-user {
+    align-self: flex-start;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+  }
+  .b-me {
+    align-self: flex-end;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+
+  /* EXPERIENCE GRID */
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .exp-card {
+    padding: 24px;
+  }
+  .exp-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--cyan);
+  }
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <div class="avatar-badge">MU</div>
+      <div>
+        <div class="brand-name">MUHAMMAD UMAIR CHEEMA</div>
+        <div class="brand-sub">GIS Mapping &bull; Digital Operations &bull; AI &amp; Automation Builder</div>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#strengths">Why Hire Me</a>
+      <a href="#work-demos">Interactive Work Demos</a>
+      <a href="#lead-chat">Lead Gen &amp; Support</a>
+      <a href="#experience">Work History</a>
+    </nav>
+
+    <div class="nav-btns">
+      <button class="btn-ghost" onclick="toggleTheme()" id="theme-btn">Light Mode</button>
+      <a href="mailto:umaircheemapa2@gmail.com" class="btn-primary">Contact Me &rarr;</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO SECTION -->
+  <section class="hero-grid">
+    <div class="card hero-left">
+      <div>
+        <div class="pill-badge">
+          <span class="dot-live"></span>
+          AVAILABLE FOR REMOTE &amp; ON-SITE ROLES &bull; FAST TECH LEARNER
+        </div>
+        <h1 class="hero-title">
+          Tech-Savvy Problem Solver, <span class="grad-text">GIS Specialist &amp; Smart Workflow Builder.</span>
+        </h1>
+        <p class="hero-desc">
+          I combine real corporate experience in <strong>Geo-Polygon Mapping (AIRCOD TECHNOLOGIES)</strong>, <strong>US/UK Lead Generation</strong>, and <strong>English Live Chat Support</strong> with a deep passion for technology. Using modern AI tools, I also build <strong>custom browser extensions, workflow automations, and web apps</strong> to complete tasks faster and with higher accuracy.
+        </p>
+
+        <div class="skill-tags">
+          <span class="skill-tag">Google Earth Pro &amp; AirView GIS</span>
+          <span class="skill-tag">Medical &amp; Spatial AI Data Annotation</span>
+          <span class="skill-tag">Custom Chrome Extensions &amp; AI Automation</span>
+          <span class="skill-tag">US/UK Lead Generation &amp; CRM</span>
+          <span class="skill-tag">English Live Chat Support</span>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="num">1,200+</div>
+          <div class="lbl">GIS Polygons Mapped</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">98.5%</div>
+          <div class="lbl">Quality Accuracy</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">200+/mo</div>
+          <div class="lbl">US/UK Leads Handled</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">&lt; 60s</div>
+          <div class="lbl">Chat Response Time</div>
+        </div>
+      </div>
+      <!-- ACTION CTA BUTTONS -->
+      <div class="hero-actions" style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center;">
+        <a href="Muhammad_Umair_Cheema_CV.pdf" download class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 12px 22px; font-weight: 700; font-size: 14px; border-radius: 9px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);">
+          <span>📄</span> Download Resume (PDF)
+        </a>
+        <a href="https://wa.me/923149669576?text=Hi%20Muhammad%20Umair,%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20connect." target="_blank" rel="noopener noreferrer" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 11px 18px; font-weight: 600; font-size: 13.5px; border-radius: 9px; border: 1px solid rgba(37, 211, 102, 0.4); background: rgba(37, 211, 102, 0.08); color: #25d366; transition: all 0.2s;">
+          <span style="font-size: 15px;">💬</span> WhatsApp Connect
+        </a>
+      </div>
+    </div>
+
+    <!-- 3D Interactive Globe -->
+    <div class="card hero-right">
+      <div class="globe-top">
+        <span>GLOBAL WORK COVERAGE</span>
+        <span style="color:#34d399;">Drag Globe to Rotate 3D</span>
+      </div>
+      <canvas id="globe-canvas" width="480" height="280"></canvas>
+      <div class="globe-foot">
+        <strong>Phone / WhatsApp:</strong> (+92) 314-9669576 &nbsp;|&nbsp; <strong>Email:</strong> umaircheemapa2@gmail.com
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: 4 CORE STRENGTHS (FAST LEARNER & AI BUILDER MINDSET) -->
+  <div id="strengths" class="sec-header">
+    <div>
+      <div class="sec-eyebrow">01 // Mindset &amp; Capabilities</div>
+      <h2 class="sec-title">What Makes Me Different From Average Candidates</h2>
+    </div>
+  </div>
+
+  <section class="strengths-grid">
+    <div class="card strength-card">
+      <div class="s-icon" style="background:rgba(16,185,129,0.15); color:#34d399;">01</div>
+      <h3>Ultra-Fast Tech Learner</h3>
+      <p>Give me any new software, CRM, mapping tool, or AI workflow—I learn it rapidly with full interest and start delivering results within days.</p>
+    </div>
+
+    <div class="card strength-card">
+      <div class="s-icon" style="background:rgba(56,189,248,0.15); color:#38bdf8;">02</div>
+      <h3>Extension &amp; Tool Builder</h3>
+      <p>Instead of doing slow manual work, I use AI-assisted coding to build custom Chrome extensions, web apps, and scripts that save hours of time.</p>
+    </div>
+
+    <div class="card strength-card">
+      <div class="s-icon" style="background:rgba(167,139,250,0.15); color:#a78bfa;">03</div>
+      <h3>98.5%+ Detail Precision</h3>
+      <p>From clinical diagnostic imaging to drawing 1,200+ telecom polygons at AIRCOD TECHNOLOGIES, I work with extreme visual care and zero carelessness.</p>
+    </div>
+
+    <div class="card strength-card">
+      <div class="s-icon" style="background:rgba(251,191,36,0.15); color:#fbbf24;">04</div>
+      <h3>US/UK Client Communication</h3>
+      <p>Experienced in handling 60–80+ daily English live chats and managing US/UK homeowner service leads with <60-second response speed.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: INTERACTIVE WORK DEMOS (GIS MAPPING + EXTENSION AUTOMATION) -->
+  <div id="work-demos" class="sec-header">
+    <div>
+      <div class="sec-eyebrow">02 // Interactive Work Samples</div>
+      <h2 class="sec-title">GIS Polygon Mapping &amp; Smart Workflow Automation</h2>
+    </div>
+    <div class="sec-sub">Click the buttons below to see how I map geospatial zones and how I automate repetitive tasks.</div>
+  </div>
+
+  <section class="split-2">
+    <!-- Left: Simple & Visual GIS Polygon Demo -->
+    <div class="card map-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:18px; font-weight:800;">1. GIS &amp; RF Polygon Mapping (AIRCOD TECHNOLOGIES)</h3>
+        <span class="exp-badge">Google Earth Pro &amp; AirView</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-2); margin-top:4px;">
+        Click any zone below to see how I draw clean, non-overlapping polygons on satellite maps for network coverage planning:
+      </p>
+
+      <div class="zone-btns">
+        <button class="zone-btn active" onclick="showZone('rf', this)">RF Network Coverage Zone</button>
+        <button class="zone-btn" onclick="showZone('commercial', this)">Commercial Buildings Block</button>
+        <button class="zone-btn" onclick="showZone('boundary', this)">Clean Boundary Check (QA)</button>
+      </div>
+
+      <div class="map-box">
+                <svg id="gis-svg" viewBox="0 0 540 240" style="background:#090d16; border-radius:8px; display:block; width:100%;">
+          <defs>
+            <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(148,163,184,0.06)" stroke-width="1"/>
+            </pattern>
+            <radialGradient id="sectorGrad" cx="0%" cy="0%" r="100%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+              <stop offset="60%" stop-color="#38bdf8" stop-opacity="0.18" />
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.02" />
+            </radialGradient>
+          </defs>
+
+          <!-- 1. Coordinate Grid Background (AirView Style) -->
+          <rect width="540" height="240" fill="url(#gridPattern)" />
+
+          <!-- 2. Commercial Boulevard & Access Streets -->
+          <!-- Main Boulevard (East-West) -->
+          <rect x="0" y="192" width="540" height="28" fill="#131926" stroke="rgba(148,163,184,0.15)" stroke-width="1" />
+          <line x1="0" y1="206" x2="540" y2="206" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="8 6" opacity="0.6" />
+          <text x="270" y="224" fill="#64748b" font-size="8.5" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">COMMERCIAL BOULEVARD (MAIN CORRIDOR)</text>
+
+          <!-- Access Cross Street (North-South) -->
+          <rect x="238" y="0" width="30" height="192" fill="#131926" stroke="rgba(148,163,184,0.12)" stroke-width="1" />
+          <line x1="253" y1="0" x2="253" y2="192" stroke="#475569" stroke-width="1" stroke-dasharray="6 5" />
+
+          <!-- 3. ZONE 1: RF Antenna Sector Coverage (z-rf) -->
+          <g id="z-rf" style="transition: opacity 0.25s ease;">
+            <!-- Sector Beam Wedge from Macro Cell Site Tower (505, 35) -->
+            <path d="M 505,35 L 20,70 A 520,520 0 0,0 200,210 Z" fill="url(#sectorGrad)" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="6 4" />
+            <!-- Concentric Signal Wavefronts -->
+            <path d="M 505,35 L 180,60 A 340,340 0 0,0 300,180 Z" fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1.2" stroke-dasharray="4 4" />
+            <path d="M 505,35 L 320,52 A 190,190 0 0,0 390,140 Z" fill="none" stroke="rgba(56,189,248,0.6)" stroke-width="1.2" stroke-dasharray="3 3" />
+            <!-- Boresight Line -->
+            <line x1="505" y1="35" x2="110" y2="140" stroke="#00f2fe" stroke-width="2" />
+            <!-- Beam Callout Tag -->
+            <rect x="75" y="112" width="145" height="18" rx="4" fill="rgba(15,23,42,0.92)" stroke="#38bdf8" stroke-width="1" />
+            <text x="147" y="125" fill="#38bdf8" font-size="9.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">RF 5G Sector Beam (Azimuth 250°)</text>
+          </g>
+
+          <!-- 4. REALISTIC ARCHITECTURAL ROOFTOPS (Clean Standalone & Plazas) -->
+          <g id="z-commercial" style="transition: opacity 0.25s ease; opacity: 0.35;">
+            <!-- Building 1: Corporate Plaza (L-Shaped Architectural Footprint) -->
+            <polygon points="32,24 165,24 165,75 125,75 125,125 32,125" fill="rgba(16,185,129,0.22)" stroke="#10b981" stroke-width="2" />
+            <!-- Rooftop HVAC/Solar Unit -->
+            <rect x="45" y="38" width="40" height="26" fill="rgba(16,185,129,0.35)" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" />
+            <text x="65" y="54" fill="#34d399" font-size="8" font-family="sans-serif" text-anchor="middle">SOLAR</text>
+            <!-- Vertex Node Dots -->
+            <circle cx="32" cy="24" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <circle cx="165" cy="24" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <circle cx="165" cy="75" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <circle cx="125" cy="75" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <circle cx="125" cy="125" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <circle cx="32" cy="125" r="3" fill="#fff" stroke="#10b981" stroke-width="1.5" />
+            <text x="78" y="102" fill="#a7f3d0" font-size="11" font-weight="bold" font-family="sans-serif">Corporate Plaza (18m)</text>
+
+            <!-- Building 2: South Standalone Tech Pavilion -->
+            <polygon points="32,142 165,142 165,182 32,182" fill="rgba(56,189,248,0.22)" stroke="#38bdf8" stroke-width="2" />
+            <circle cx="32" cy="142" r="3" fill="#fff" stroke="#38bdf8" stroke-width="1.5" />
+            <circle cx="165" cy="142" r="3" fill="#fff" stroke="#38bdf8" stroke-width="1.5" />
+            <circle cx="165" cy="182" r="3" fill="#fff" stroke="#38bdf8" stroke-width="1.5" />
+            <circle cx="32" cy="182" r="3" fill="#fff" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="98" y="165" fill="#bae6fd" font-size="10.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">Tech Pavilion (14m)</text>
+
+            <!-- Contiguous Retail Plaza Block B (East of Cross Street) -->
+            <!-- Building 3: Retail Center Unit 1 -->
+            <polygon points="285,55 375,55 375,135 285,135" fill="rgba(251,191,36,0.22)" stroke="#fbbf24" stroke-width="2" />
+            <text x="330" y="98" fill="#fef08a" font-size="10.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">Retail Unit 1</text>
+
+            <!-- Building 4: Retail Center Unit 2 (Contiguous with Unit 1, Zero Gap Shared Wall) -->
+            <polygon points="375,55 465,55 465,135 375,135" fill="rgba(167,139,250,0.22)" stroke="#a78bfa" stroke-width="2" />
+            <text x="420" y="98" fill="#ddd6fe" font-size="10.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">Retail Unit 2</text>
+
+            <!-- Building 5: Standalone Commercial Tower -->
+            <polygon points="305,150 445,150 445,182 305,182" fill="rgba(16,185,129,0.22)" stroke="#10b981" stroke-width="2" />
+            <text x="375" y="169" fill="#a7f3d0" font-size="10.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">Commercial Tower (24m)</text>
+          </g>
+
+          <!-- 5. ZONE 3: Clean Topology & Zero-Overlap Check (z-boundary) -->
+          <g id="z-boundary" style="transition: opacity 0.25s ease; opacity: 0.35;">
+            <!-- Shared Party Wall Seam highlighted in glowing Gold -->
+            <line x1="375" y1="55" x2="375" y2="135" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round" />
+            <!-- QA Verification Callout Badges -->
+            <rect x="295" y="24" width="160" height="20" rx="4" fill="rgba(16,185,129,0.95)" stroke="#fff" stroke-width="1" />
+            <text x="375" y="38" fill="#fff" font-size="10" font-weight="bold" font-family="sans-serif" text-anchor="middle">✓ Shared Seam: 0.0m Overlap (QA)</text>
+
+            <rect x="30" y="8" width="135" height="16" rx="3" fill="rgba(15,23,42,0.92)" stroke="#10b981" stroke-width="1" />
+            <text x="97" y="19" fill="#34d399" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">✓ Snapped Parapet Contour</text>
+          </g>
+
+          <!-- 6. Cellular Macro Site Tower (505, 35) -->
+          <g id="z-tower">
+            <circle cx="505" cy="35" r="9" fill="none" stroke="#ef4444" stroke-width="1.5">
+              <animate attributeName="r" values="6;14;6" dur="2.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.5s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="505" cy="35" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="1.5" />
+            <text x="505" y="38" fill="#fff" font-size="8" font-family="sans-serif" text-anchor="middle">📡</text>
+            <rect x="430" y="8" width="105" height="16" rx="3" fill="rgba(15,23,42,0.92)" stroke="#ef4444" stroke-width="1" />
+            <text x="482" y="19" fill="#f87171" font-size="8.5" font-weight="bold" font-family="sans-serif" text-anchor="middle">Macro Site BTS-04 (32m)</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="map-info">
+        <div id="zone-desc" style="font-size:13px; color:var(--text-1);">
+          <strong>What I Did:</strong> Used AirView &amp; Google Earth to draw accurate polygons around network zones so RF engineers could optimize signal coverage.
+        </div>
+        <span style="color:#34d399; font-weight:700; font-size:12.5px;">✓ 98.5%+ Accuracy</span>
+      </div>
+    </div>
+
+    <!-- Right: Custom Chrome Extension & App Builder Demo -->
+    <div class="card auto-card">
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:18px; font-weight:800;">2. Custom Chrome Extension &amp; Tool Builder</h3>
+          <span class="exp-badge">AI-Assisted Coding</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-2); margin-top:4px;">
+          When managing bulk US/UK marketplace listings, manual typing was too slow—so I built a custom browser extension &amp; web tools to automate it:
+        </p>
+
+        <div class="compare-box">
+          <div class="cmp-col">
+            <div style="font-size:11.5px; color:#f43f5e; font-weight:700;">BEFORE (MANUAL WORK)</div>
+            <div style="font-size:19px; font-weight:800; margin-top:2px;">4–5 Hours / Day</div>
+            <div style="font-size:12px; color:var(--text-2);">Slow copy-pasting &amp; manual form filling</div>
+          </div>
+          <div class="cmp-col" style="border-color:rgba(16,185,129,0.4);">
+            <div style="font-size:11.5px; color:#34d399; font-weight:700;">WITH MY CUSTOM EXTENSION</div>
+            <div style="font-size:19px; font-weight:800; margin-top:2px;">80% Faster</div>
+            <div style="font-size:12px; color:var(--text-2);">1-click form auto-fill &amp; sheet tracking</div>
+          </div>
+        </div>
+
+        <div class="step-flow" id="ext-steps">
+          <div class="flow-step highlight" id="st-1">
+            <div class="step-num">1</div>
+            <div style="font-size:12.5px;"><strong>Select Target City &amp; Service:</strong> Picks US/UK city (e.g., Houston Electrical or Manchester Plumbing) from my tool.</div>
+          </div>
+          <div class="flow-step" id="st-2">
+            <div class="step-num">2</div>
+            <div style="font-size:12.5px;"><strong>Auto-Fill Listing Details:</strong> Extension automatically fills title, category, description, and location on the page.</div>
+          </div>
+          <div class="flow-step" id="st-3">
+            <div class="step-num">3</div>
+            <div style="font-size:12.5px;"><strong>Track Leads in Google Sheets:</strong> Organizes incoming customer leads neatly for quick team follow-up.</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="width:100%; border:none; cursor:pointer; margin-top:12px;" onclick="animateExtFlow()">
+        ▶ Simulate My Automation Workflow
+      </button>
+    </div>
+  </section>
+
+  <!-- SECTION 3: US/UK LEAD GEN & LIVE CHAT SUPPORT -->
+  <div id="lead-chat" class="sec-header">
+    <div>
+      <div class="sec-eyebrow">03 // Client Operations &amp; Support</div>
+      <h2 class="sec-title">US/UK Lead Management &amp; English Live Chat Support</h2>
+    </div>
+  </div>
+
+  <section class="split-2">
+    <!-- Left: Simple Lead Pipeline -->
+    <div class="card" style="padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:17px; font-weight:800;">Sample US &amp; UK Home Service Leads Handled</h3>
+        <span class="exp-badge">Google Sheets &amp; Excel CRM</span>
+      </div>
+
+      <div class="lead-row">
+        <div>
+          <div style="font-weight:700;">Austin, Texas (USA) &bull; <span style="color:var(--cyan);">Electrical Service</span></div>
+          <div style="font-size:12.5px; color:var(--text-2);">200A Main Breaker Panel Upgrade &amp; EV Charger</div>
+        </div>
+        <span class="pill-badge" style="margin:0;">Qualified &amp; Booked</span>
+      </div>
+
+      <div class="lead-row">
+        <div>
+          <div style="font-weight:700;">Manchester (UK) &bull; <span style="color:var(--cyan);">Plumbing &amp; Heating</span></div>
+          <div style="font-size:12.5px; color:var(--text-2);">Emergency Boiler Pressure Check &amp; Leak Repair</div>
+        </div>
+        <span class="pill-badge" style="margin:0;">Qualified &amp; Booked</span>
+      </div>
+
+      <div class="lead-row" style="margin-bottom:0;">
+        <div>
+          <div style="font-weight:700;">Chicago, Illinois (USA) &bull; <span style="color:var(--cyan);">HVAC / Air Conditioning</span></div>
+          <div style="font-size:12.5px; color:var(--text-2);">Central AC Compressor Inspection &amp; Maintenance</div>
+        </div>
+        <span class="pill-badge" style="margin:0;">Qualified &amp; Booked</span>
+      </div>
+    </div>
+
+    <!-- Right: Friendly Live Chat Demo -->
+    <div class="card" style="padding:24px; display:flex; flex-direction:column; justify-content:space-between;">
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="font-size:17px; font-weight:800;">English Live Chat Support Sample</h3>
+          <button class="btn-ghost" style="padding:5px 12px; font-size:12px;" onclick="replayChat()">↻ Replay Chat</button>
+        </div>
+        <div class="chat-box" id="chat-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: WORK EXPERIENCE & EDUCATION -->
+  <div id="experience" class="sec-header">
+    <div>
+      <div class="sec-eyebrow">04 // Continuous Career Timeline (2023 – Present)</div>
+      <h2 class="sec-title">Work Experience &amp; Education</h2>
+    </div>
+  </div>
+
+  <section class="exp-grid">
+    <div class="card exp-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <div>
+          <h3 style="font-size:16.5px; font-weight:800;">Digital Operations &amp; Lead Generation Lead</h3>
+          <div style="color:var(--cyan); font-weight:600; font-size:13.5px;">Independent Digital Services (US &amp; UK Markets)</div>
+        </div>
+        <span class="exp-badge">Feb 2025 – Present</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-1);">
+        Manage bulk service listings on Facebook Marketplace for US/UK home service businesses, supervise 4–6 team members, qualify customer leads in English chat, and build custom automation extensions/tools to speed up daily operations.
+      </p>
+    </div>
+
+    <div class="card exp-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <div>
+          <h3 style="font-size:16.5px; font-weight:800;">GIS &amp; RF Polygon Mapping Specialist</h3>
+          <div style="color:#34d399; font-weight:600; font-size:13.5px;">AIRCOD TECHNOLOGIES (Johar Town, Lahore)</div>
+        </div>
+        <span class="exp-badge">Aug 2024 – Feb 2025</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-1);">
+        Used AirView software and Google Earth Pro to draw and analyze 1,200+ accurate polygons for telecom RF network planning and coverage mapping with 98.5%+ quality accuracy.
+      </p>
+    </div>
+
+    <div class="card exp-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <div>
+          <h3 style="font-size:16.5px; font-weight:800;">Customer Chat Support Specialist</h3>
+          <div style="color:var(--cyan); font-weight:600; font-size:13.5px;">Digital BPO &amp; Client Support Services (Lahore)</div>
+        </div>
+        <span class="exp-badge">Nov 2023 – Jul 2024</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-1);">
+        Provided fast and polite English live chat support for international customers, handling 3–4 chats at a time across order processing, product queries, and troubleshooting (<60s response time).
+      </p>
+    </div>
+
+    <div class="card exp-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <div>
+          <h3 style="font-size:16.5px; font-weight:800;">BS Medical Imaging Technology &amp; Clinical Intern</h3>
+          <div style="color:#34d399; font-weight:600; font-size:13.5px;">Superior University, Jinnah Hospital &amp; General Hospital</div>
+        </div>
+        <span class="exp-badge">2019 – Oct 2023</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-1);">
+        Completed 4-year BS degree at Superior University Lahore and clinical rotations at Jinnah Hospital &amp; Lahore General Hospital performing CT &amp; digital X-ray imaging with strict attention to detail.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- FOOTER & QUICK CONNECT -->
+  <footer style="margin-top: 50px; padding: 36px 28px; background: var(--bg-1); border: 1px solid var(--border); border-radius: 18px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="avatar-badge" style="width: 34px; height: 34px; font-size: 13px;">MU</div>
+      <span style="font-weight: 800; font-size: 16px; letter-spacing: 0.3px;">MUHAMMAD UMAIR CHEEMA</span>
+    </div>
+    <p style="color: var(--text-2); font-size: 13.5px; max-width: 580px; margin: 0 auto;">
+      Ready to contribute to GIS mapping projects, AI data annotation workflows, lead generation pipelines, and customer operations worldwide.
+    </p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 6px;">
+      <a href="Muhammad_Umair_Cheema_CV.pdf" download class="btn-primary" style="padding: 10px 20px; font-size: 13px; font-weight: 700; text-decoration: none; border-radius: 8px;">
+        📄 Download Resume (PDF)
+      </a>
+      <a href="https://wa.me/923149669576?text=Hi%20Muhammad%20Umair,%20I%20reviewed%20your%20portfolio." target="_blank" rel="noopener noreferrer" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; text-decoration: none; border-radius: 8px; border: 1px solid rgba(37,211,102,0.4); color:#25d366;">
+        💬 WhatsApp (+92 314-9669576)
+      </a>
+      <a href="mailto:umaircheemapa2@gmail.com" class="btn-ghost" style="padding: 10px 18px; font-size: 13px; text-decoration: none; border-radius: 8px; border: 1px solid var(--border); color: var(--text-1);">
+        ✉️ umaircheemapa2@gmail.com
+      </a>
+    </div>
+    <div style="color: var(--text-2); font-size: 12px; border-top: 1px solid var(--border); width: 100%; padding-top: 18px; margin-top: 10px;">
+      &copy; 2026 Muhammad Umair Cheema &bull; Punjab, Pakistan &bull; Built with clean, lightweight semantic code.
+    </div>
+  </footer>
+</main>
+
+<script>
+  // Cursor Spotlight Glow
+  document.querySelectorAll('.card').forEach(c => {
+    c.addEventListener('mousemove', e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      c.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+
+  // Theme Toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.getElementById('theme-btn').textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+  }
+
+  // 3D Interactive Rotating Globe
+  const gCanvas = document.getElementById('globe-canvas');
+  const gCtx = gCanvas.getContext('2d');
+  let rotY = -0.5, rotX = 0.22, dragging = false, lx = 0, ly = 0;
+
+  const dots = [];
+  for (let lat = -75; lat <= 75; lat += 12) {
+    const r = Math.cos((lat * Math.PI) / 180);
+    const cnt = Math.max(6, Math.floor(r * 34));
+    for (let i = 0; i < cnt; i++) dots.push({ lat, lon: (i / cnt) * 360 - 180 });
+  }
+  const cities = [
+    { name: 'PAKISTAN (Lahore)', lat: 31.5, lon: 74.3, col: '#10b981' },
+    { name: 'UK (Manchester)', lat: 53.4, lon: -2.2, col: '#38bdf8' },
+    { name: 'USA (Texas / Illinois)', lat: 34.0, lon: -94.0, col: '#a78bfa' }
+  ];
+
+  function proj(lat, lon, R) {
+    const p = (lat * Math.PI) / 180, t = (lon * Math.PI) / 180 + rotY;
+    const x = R * Math.cos(p) * Math.sin(t), y = -R * Math.sin(p), z = R * Math.cos(p) * Math.cos(t);
+    const cy = Math.cos(rotX), sy = Math.sin(rotX);
+    return { x: gCanvas.width / 2 + x, y: gCanvas.height / 2 + (y * cy - z * sy), z: y * sy + z * cy };
+  }
+
+  function drawGlobe() {
+    gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+    if (!dragging) rotY += 0.005;
+    const R = 105;
+
+    dots.forEach(d => {
+      const p = proj(d.lat, d.lon, R);
+      if (p.z > -20) {
+        const a = Math.max(0.15, (p.z + R) / (2 * R));
+        gCtx.fillStyle = `rgba(148, 163, 184, ${a * 0.6})`;
+        gCtx.beginPath(); gCtx.arc(p.x, p.y, 1.4, 0, Math.PI * 2); gCtx.fill();
+      }
+    });
+
+    const pk = proj(cities[0].lat, cities[0].lon, R);
+    cities.slice(1).forEach(c => {
+      const tg = proj(c.lat, c.lon, R);
+      gCtx.strokeStyle = c.col + '88';
+      gCtx.lineWidth = 1.5;
+      gCtx.setLineDash([4, 3]);
+      gCtx.beginPath(); gCtx.moveTo(pk.x, pk.y);
+      gCtx.quadraticCurveTo(gCanvas.width / 2, gCanvas.height / 2 - 55, tg.x, tg.y);
+      gCtx.stroke(); gCtx.setLineDash([]);
+    });
+
+    cities.forEach(c => {
+      const p = proj(c.lat, c.lon, R);
+      if (p.z > -30) {
+        gCtx.fillStyle = c.col;
+        gCtx.beginPath(); gCtx.arc(p.x, p.y, 4.5, 0, Math.PI * 2); gCtx.fill();
+        gCtx.font = 'bold 11px Inter, sans-serif';
+        gCtx.fillStyle = '#f8fafc';
+        gCtx.fillText(c.name, p.x + 8, p.y + 4);
+      }
+    });
+    requestAnimationFrame(drawGlobe);
+  }
+  drawGlobe();
+
+  gCanvas.addEventListener('mousedown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+  window.addEventListener('mouseup', () => dragging = false);
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    rotY += (e.clientX - lx) * 0.008;
+    rotX = Math.max(-0.7, Math.min(0.7, rotX + (e.clientY - ly) * 0.006));
+    lx = e.clientX; ly = e.clientY;
+  });
+
+  // GIS Map Interactive Switcher
+    const zoneInfo = {
+    rf: '<strong>RF Network Coverage Zone:</strong> Digitized multi-vertex sector polygons and signal propagation angles in AirView & Google Earth Pro for wireless network site planning.',
+    commercial: '<strong>Commercial Rooftops Footprints:</strong> Architectural building footprints digitized with sub-pixel vertex snapping to physical parapets for 3D clutter classification.',
+    boundary: '<strong>Clean Topology & QA Check:</strong> Zero boundary overlap (0.0m tolerance) with verified snapping along shared walls, achieving 98.5%+ first-pass quality assurance.'
+  };
+  function showZone(z, btn) {
+    document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['rf', 'commercial', 'boundary'].forEach(id => {
+      document.getElementById('z-' + id).style.opacity = id === z ? '1' : '0.3';
+    });
+    document.getElementById('zone-desc').innerHTML = zoneInfo[z];
+  }
+
+  // Extension Animation Flow
+  function animateExtFlow() {
+    const ids = ['st-1', 'st-2', 'st-3'];
+    ids.forEach(id => document.getElementById(id).classList.remove('highlight'));
+    ids.forEach((id, i) => {
+      setTimeout(() => {
+        ids.forEach(x => document.getElementById(x).classList.remove('highlight'));
+        document.getElementById(id).classList.add('highlight');
+      }, i * 650);
+    });
+  }
+
+  // Friendly Live Chat Replay
+  const msgs = [
+    { me: false, who: 'Sarah M. (Austin, TX)', txt: 'Hi! Do you have an electrician available today? Our main breaker keeps tripping.' },
+    { me: true, who: 'Muhammad Umair • Response: 28 sec', txt: 'Hello Sarah! Yes, our licensed team covers Austin today. Could you share your ZIP code and let me know if it trips when the AC turns on?' },
+    { me: false, who: 'Sarah M. (Austin, TX)', txt: 'ZIP is 78704. Yes, right when the central AC starts!' },
+    { me: true, who: 'Muhammad Umair • Response: 35 sec', txt: 'Got it! I have booked our senior technician for 2:00 PM today and logged your priority request. You will get an SMS confirmation shortly!' }
+  ];
+  let cTimer = null;
+  function replayChat() {
+    const box = document.getElementById('chat-container');
+    box.innerHTML = '';
+    if (cTimer) clearInterval(cTimer);
+    let i = 0;
+    function step() {
+      if (i >= msgs.length) return;
+      const m = msgs[i++];
+      const d = document.createElement('div');
+      d.className = 'bubble ' + (m.me ? 'b-me' : 'b-user');
+      d.innerHTML = `<div style="font-size:11px; font-weight:700; color:${m.me ? '#34d399' : '#38bdf8'}; margin-bottom:2px;">${m.who}</div><div>${m.txt}</div>`;
+      box.appendChild(d);
+    }
+    step();
+    cTimer = setInterval(() => { if (i < msgs.length) step(); else clearInterval(cTimer); }, 800);
+  }
+  replayChat();
+</script>
+</body>
+</html>
